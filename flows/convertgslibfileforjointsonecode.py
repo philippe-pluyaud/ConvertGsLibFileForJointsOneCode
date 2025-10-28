@@ -1,4 +1,3 @@
-
 # This file is your entry point:
 # - add you Python files and folder inside this 'flows' folder
 # - add your imports
@@ -9,6 +8,7 @@
 # Alternatively, ask for help at https://github.com/deeplime-io/onecode/issues
 
 import onecode
+
 
 def modify_gslib(input_file, output_file, i_offset=0, j_offset=0, k_offset=0,
                  dip_angle=0.0, strike_angle=0.0, KN=8000000, KS=4000000):
@@ -98,19 +98,21 @@ def modify_gslib(input_file, output_file, i_offset=0, j_offset=0, k_offset=0,
                     f"{dip:13.7f} {strike:13.7f} "
                     f"{kn:14.0f} {ks:14.0f}\n")
 
+
 def run():
     my_input_file = onecode.file_input(
         key="input_gslib_file",
-        value="*.gslib",
         label="Select a GSLib file",
-        types=[onecode.FileFilter.CSV])
+        types=["*.gslib"])
+    my_output_file = onecode.file_output(
+        key="output_gslib_file",
+        make_path=True)
+    my_i_offset = onecode.number_input(key="i_offset", value=0, label="I offset", min=0, max=None, step=1)
+    my_j_offset = onecode.number_input(key="j_offset", value=0, label="J offset", min=0, max=None, step=1)
+    my_k_offset = onecode.number_input(key="k_offset", value=0, label="K offset", min=0, max=None, step=1)
+    my_dip_angle = onecode.slider(key="dip_angle", value=0, label="Dip angle", min=0, max=90, step=0.1)
+    my_strike_angle = onecode.slider(key="strike_angle", value=0, label="Strike angle", min=0, max=360, step=0.1)
+    my_KN = onecode.number_input(key="KN", value=8000000, label="KN", min=0, max=None, step=0.1)
+    my_KS = onecode.number_input(key="KS", value=4000000, label="KS", min=0, max=None, step=0.1)
 
-    modify_gslib(my_input_file,
-                 'C:\\Users\\phili\\OneDrive - Ephesia Consult\\Downloads\\output.gslib',
-                 i_offset=55,
-                 j_offset=94,
-                 k_offset=137,
-                 dip_angle=65.0,
-                 strike_angle=45.0,
-                 KN=8000000,
-                 KS=4000000)
+    modify_gslib(my_input_file, my_output_file, my_i_offset, my_j_offset, my_dip_angle, my_strike_angle, my_KN, my_KS)
