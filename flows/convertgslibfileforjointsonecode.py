@@ -102,9 +102,9 @@ def modify_gslib(input_file, output_file, i_offset=0, j_offset=0, k_offset=0,
 def run():
     my_input_file = onecode.file_input(
         key="input_gslib_file",
-        value="*.gslib",
+        value="input.gslib",
         label="Select a GSLib file",
-        types=["*.gslib"])
+        types=[("GSLib", ".gslib")])
     my_output_file = onecode.file_output(
         key="output_gslib_file",
         value="output.gslib",
