@@ -9,6 +9,8 @@
 
 import onecode
 
+from flows.plot_3d_scatter import plot_3d_scatter
+
 
 def modify_gslib(input_file, output_file, i_offset=0, j_offset=0, k_offset=0,
                  dip_angle=0.0, strike_angle=0.0, KN=8000000, KS=4000000):
@@ -55,6 +57,12 @@ def modify_gslib(input_file, output_file, i_offset=0, j_offset=0, k_offset=0,
     data_start = 2 + num_variables_old
     data_lines = [line.strip() for line in lines[data_start:] if line.strip()]
 
+    # Create lists to store coordinates and color values
+    x_coords = []
+    y_coords = []
+    z_coords = []
+    color_values = []
+
     # Write modified file
     with open(output_file, 'w') as f:
         # Write header
@@ -85,6 +93,11 @@ def modify_gslib(input_file, output_file, i_offset=0, j_offset=0, k_offset=0,
             y_coord = float(values[4])
             z_coord = float(values[5])
             # values[6] is P-Velocity - we skip it
+            # Store coordinates and color value
+            x_coords.append(x_coord)
+            y_coords.append(y_coord)
+            z_coords.append(z_coord)
+            color_values.append(values[6])
 
             # Get new column values (can be constant or vary per row)
             dip = dip_angle[idx] if isinstance(dip_angle, list) else dip_angle
@@ -97,6 +110,14 @@ def modify_gslib(input_file, output_file, i_offset=0, j_offset=0, k_offset=0,
                     f"{x_coord:18.7f} {y_coord:18.7f} {z_coord:18.7f} "
                     f"{dip:13.7f} {strike:13.7f} "
                     f"{kn:14.0f} {ks:14.0f}\n")
+
+        # Call the plotting function
+        plot_3d_scatter(x_coords, y_coords, z_coords, color_values,
+                        title='3D Point Cloud - Color Coded by P-Velocity',
+                        color_label='P-Velocity',
+                        cmap='viridis',
+                        point_size=50,
+                        alpha=0.6)
 
 
 def run():
