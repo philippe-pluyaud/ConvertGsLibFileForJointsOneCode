@@ -117,4 +117,6 @@ def run():
     my_kn = onecode.number_input(key="KN", value=8000000, label="KN", min=0, max=None, step=0.1)
     my_ks = onecode.number_input(key="KS", value=4000000, label="KS", min=0, max=None, step=0.1)
 
-    modify_gslib(my_input_file, my_output_file, my_i_offset, my_j_offset, my_dip_angle, my_strike_angle, my_kn, my_ks)
+    modify_gslib(my_input_file, my_output_file,
+                 my_i_offset, my_j_offset, my_k_offset,
+                 my_dip_angle, my_strike_angle, my_kn, my_ks)
